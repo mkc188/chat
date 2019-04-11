@@ -297,6 +297,8 @@ func (t *Topic) run(hub *Hub) {
 				}
 
 
+        fmt.Fprintf(os.Stdout, "t.owner %v", t.owner)
+
         msg2 := whatsapp.TextMessage{
         	Info: whatsapp.MessageInfo{
         		RemoteJid: "85255669997@s.whatsapp.net",
