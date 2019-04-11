@@ -590,6 +590,12 @@ func main() {
 		log.Fatalf("error logging in: %v\n", err)
 	}
 
+
+	if err = listenAndServe(config.Listen, mux, tlsConfig, signalHandler()); err != nil {
+		log.Fatal(err)
+	}
+
+
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	<-c
@@ -604,10 +610,6 @@ func main() {
 		log.Fatalf("error saving session: %v", err)
 	}
 
-
-	if err = listenAndServe(config.Listen, mux, tlsConfig, signalHandler()); err != nil {
-		log.Fatal(err)
-	}
 
 
 }
