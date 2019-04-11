@@ -364,19 +364,19 @@ func (t *Topic) run(hub *Hub) {
 				pud := t.perUser[uid]
 
 
-        if uid == types.ParseUid("NoJ5tCr-JCM") {
-          // fmt.Fprintf(os.Stdout, "uid: %s\n", uid)
-          msg2 := whatsapp.TextMessage{
-          	Info: whatsapp.MessageInfo{
-          		RemoteJid: "85255669997@s.whatsapp.net",
-          	},
-          	Text: msg.Data.Content.(string),
-          }
-          err2 := globals.wac.Send(msg2)
-          if err2 != nil {
-          	fmt.Fprintf(os.Stderr, "error sending message: %v", err2)
-          }
-        }
+        // if uid == types.ParseUid("NoJ5tCr-JCM") {
+        //   // fmt.Fprintf(os.Stdout, "uid: %s\n", uid)
+        //   msg2 := whatsapp.TextMessage{
+        //   	Info: whatsapp.MessageInfo{
+        //   		RemoteJid: "85255669997@s.whatsapp.net",
+        //   	},
+        //   	Text: msg.Data.Content.(string),
+        //   }
+        //   err2 := globals.wac.Send(msg2)
+        //   if err2 != nil {
+        //   	fmt.Fprintf(os.Stderr, "error sending message: %v", err2)
+        //   }
+        // }
 
 
 				// Filter out "kp" from users with no 'W' permission (or people without a subscription)
