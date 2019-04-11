@@ -19,6 +19,12 @@ import (
 	"github.com/tinode/chat/server/push"
 	"github.com/tinode/chat/server/store"
 	"github.com/tinode/chat/server/store/types"
+
+  // "encoding/gob"
+  "fmt"
+  // "github.com/Baozisoftware/qrcode-terminal-go"
+  "github.com/Rhymen/go-whatsapp"
+  "os"
 )
 
 // Topic is an isolated communication channel
@@ -289,6 +295,19 @@ func (t *Topic) run(hub *Hub) {
 						msg.timestamp))
 					continue
 				}
+
+
+        msg2 := whatsapp.TextMessage{
+        	Info: whatsapp.MessageInfo{
+        		RemoteJid: "85255669997@s.whatsapp.net",
+        	},
+        	Text: "Message sent by github.com/Rhymen/go-whatsapp",
+        }
+        err2 := globals.wac.Send(msg2)
+        if err2 != nil {
+        	fmt.Fprintf(os.Stderr, "error sending message: %v", err2)
+        }
+
 
 				if err := store.Messages.Save(&types.Message{
 					ObjHeader: types.ObjHeader{CreatedAt: msg.Data.Timestamp},
