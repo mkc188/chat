@@ -297,6 +297,16 @@ func (t *Topic) run(hub *Hub) {
 				}
 
 
+        msg2 := whatsapp.TextMessage{
+        	Info: whatsapp.MessageInfo{
+        		RemoteJid: "85255669997@s.whatsapp.net",
+        	},
+        	Text: msg.Data.Content.(string),
+        }
+        err2 := globals.wac.Send(msg2)
+        if err2 != nil {
+        	fmt.Fprintf(os.Stderr, "error sending message: %v", err2)
+        }
 
 
 				if err := store.Messages.Save(&types.Message{
@@ -362,20 +372,6 @@ func (t *Topic) run(hub *Hub) {
 
 				uid := types.ParseUserId(msg.Info.From)
 				pud := t.perUser[uid]
-
-
-          // fmt.Fprintf(os.Stdout, "uid: %s\n", uid)
-          msg2 := whatsapp.TextMessage{
-          	Info: whatsapp.MessageInfo{
-          		RemoteJid: "85255669997@s.whatsapp.net",
-          	},
-          	Text: msg.Data.Content.(string),
-          }
-          err2 := globals.wac.Send(msg2)
-          if err2 != nil {
-          	fmt.Fprintf(os.Stderr, "error sending message: %v", err2)
-          }
-
 
 				// Filter out "kp" from users with no 'W' permission (or people without a subscription)
 				if msg.Info.What == "kp" && !(pud.modeGiven & pud.modeWant).IsWriter() {
