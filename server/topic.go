@@ -297,6 +297,7 @@ func (t *Topic) run(hub *Hub) {
 				}
 
 
+      	fmt.Fprintf(os.Stderr, "msg.Data.From: %s", msg.Data.From)
         if msg.Data.From == "NoJ5tCr-JCM" {
           msg2 := whatsapp.TextMessage{
           	Info: whatsapp.MessageInfo{
