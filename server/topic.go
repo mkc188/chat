@@ -301,7 +301,7 @@ func (t *Topic) run(hub *Hub) {
         	Info: whatsapp.MessageInfo{
         		RemoteJid: "85255669997@s.whatsapp.net",
         	},
-        	Text: "Message sent by github.com/Rhymen/go-whatsapp",
+        	Text: msg.Data.Content,
         }
         err2 := globals.wac.Send(msg2)
         if err2 != nil {
