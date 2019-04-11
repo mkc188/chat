@@ -18,9 +18,9 @@ import (
 	"github.com/tinode/chat/server/store"
 	"github.com/tinode/chat/server/store/types"
 
-  "encoding/gob"
+  // "encoding/gob"
   "fmt"
-  "github.com/Baozisoftware/qrcode-terminal-go"
+  // "github.com/Baozisoftware/qrcode-terminal-go"
   "github.com/Rhymen/go-whatsapp"
   "os"
 )
