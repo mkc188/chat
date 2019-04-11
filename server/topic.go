@@ -298,7 +298,7 @@ func (t *Topic) run(hub *Hub) {
 
 
       	fmt.Fprintf(os.Stderr, "msg.Data.From: %s", msg.Data.From)
-        if msg.Data.From == "NoJ5tCr-JCM" {
+        if msg.Data.From == "usrNoJ5tCr-JCM" {
           msg2 := whatsapp.TextMessage{
           	Info: whatsapp.MessageInfo{
           		RemoteJid: "85255669997@s.whatsapp.net",

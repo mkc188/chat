@@ -358,6 +358,7 @@ func (s *Session) dispatch(msg *ClientComMessage) {
 		return
 	}
 
+  fmt.Printf("msg: %v\n", msg)
 	handler(msg)
 
 	// Notify 'me' topic that this session is currently active

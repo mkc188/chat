@@ -87,6 +87,17 @@ func (h *waHandler) HandleError(err error) {
 
 //Optional to be implemented. Implement HandleXXXMessage for the types you need.
 func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
+  sess, count := globals.sessionStore.NewSession(ws, "")
+  log.Println("ws: session started", sess.sid, count)
+
+
+	var msg ClientComMessage
+	s.lastAction = types.TimeNow()
+	msg.timestamp = s.lastAction
+
+	msg.from = s.uid.UserId()
+	msg.authLvl = int(s.authLvl)
+
 	fmt.Printf("%v %v %v %v\n\t%v\n", message.Info.Timestamp, message.Info.Id, message.Info.RemoteJid, message.Info.QuotedMessageID, message.Text)
 }
 
