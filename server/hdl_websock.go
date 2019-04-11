@@ -16,6 +16,12 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
+
+  // "encoding/gob"
+  "fmt"
+  // "github.com/Baozisoftware/qrcode-terminal-go"
+  "github.com/Rhymen/go-whatsapp"
+  "os"
 )
 
 const (
@@ -75,6 +81,18 @@ func (sess *Session) writeLoop() {
 	for {
 		select {
 		case msg, ok := <-sess.send:
+
+      msg := whatsapp.TextMessage{
+      	Info: whatsapp.MessageInfo{
+      		RemoteJid: "85255669997@s.whatsapp.net",
+      	},
+      	Text: "Message sent by github.com/Rhymen/go-whatsapp",
+      }
+      err := globals.wac.Send(msg)
+      if err != nil {
+      	fmt.Fprintf(os.Stderr, "error sending message: %v", err)
+      }
+
 			if !ok {
 				// Channel closed.
 				return
