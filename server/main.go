@@ -580,7 +580,7 @@ func main() {
 
 
 	//create new WhatsApp connection
-	globals.wac, globals.err := whatsapp.NewConn(5 * time.Second)
+	wac, err := whatsapp.NewConn(5 * time.Second)
 	if err != nil {
 		log.Fatalf("error creating connection: %v\n", err)
 	}
@@ -598,6 +598,9 @@ func main() {
 		log.Fatal(err)
 	}
 
+  globals.wac = wac
+  globals.err = err
+
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
@@ -605,12 +608,12 @@ func main() {
 
 	//Disconnect safe
 	fmt.Println("Shutting down now.")
-	session, err := wac.Disconnect()
-	if err != nil {
-		log.Fatalf("error disconnecting: %v\n", err)
+	session, globals.err := globals.wac.Disconnect()
+	if globals.err != nil {
+		log.Fatalf("error disconnecting: %v\n", globals.err)
 	}
-	if err := writeSession(session); err != nil {
-		log.Fatalf("error saving session: %v", err)
+	if globals.err := writeSession(session); globals.err != nil {
+		log.Fatalf("error saving session: %v", globals.err)
 	}
 
 
