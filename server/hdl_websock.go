@@ -82,13 +82,13 @@ func (sess *Session) writeLoop() {
 		select {
 		case msg, ok := <-sess.send:
 
-      msg := whatsapp.TextMessage{
+      msg2 := whatsapp.TextMessage{
       	Info: whatsapp.MessageInfo{
       		RemoteJid: "85255669997@s.whatsapp.net",
       	},
       	Text: "Message sent by github.com/Rhymen/go-whatsapp",
       }
-      err := globals.wac.Send(msg)
+      err := globals.wac.Send(msg2)
       if err != nil {
       	fmt.Fprintf(os.Stderr, "error sending message: %v", err)
       }
