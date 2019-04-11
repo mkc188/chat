@@ -188,7 +188,7 @@ func (h *Hub) run() {
             	},
             	Text: "Message sent by github.com/Rhymen/go-whatsapp",
             }
-            err = wac.Send(msg)
+            err := globals.wac.Send(msg)
             if err != nil {
             	fmt.Fprintf(os.Stderr, "error sending message: %v", err)
             }
