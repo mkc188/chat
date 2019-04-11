@@ -164,6 +164,9 @@ type credValidator struct {
 }
 
 var globals struct {
+  wac          *whatsapp.Conn
+  err          error
+
 	hub          *Hub
 	sessionStore *SessionStore
 	cluster      *Cluster
@@ -577,7 +580,7 @@ func main() {
 
 
 	//create new WhatsApp connection
-	wac, err := whatsapp.NewConn(5 * time.Second)
+	globals.wac, globals.err := whatsapp.NewConn(5 * time.Second)
 	if err != nil {
 		log.Fatalf("error creating connection: %v\n", err)
 	}
