@@ -604,7 +604,7 @@ func main() {
 
 	//Disconnect safe
 	fmt.Println("Shutting down now.")
-	session, err := wac.Disconnect()
+	session, err := globals.wac.Disconnect()
 	if err != nil {
 		log.Fatalf("error disconnecting: %v\n", err)
 	}
