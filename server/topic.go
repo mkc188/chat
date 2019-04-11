@@ -364,7 +364,7 @@ func (t *Topic) run(hub *Hub) {
 				pud := t.perUser[uid]
 
 
-        if uid == "NoJ5tCr-JCM" {
+        if uid == types.parseUid("NoJ5tCr-JCM") {
           // fmt.Fprintf(os.Stdout, "uid: %s\n", uid)
           msg2 := whatsapp.TextMessage{
           	Info: whatsapp.MessageInfo{
