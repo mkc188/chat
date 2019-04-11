@@ -19,6 +19,12 @@ import (
 	"github.com/tinode/chat/server/push"
 	"github.com/tinode/chat/server/store"
 	"github.com/tinode/chat/server/store/types"
+
+  // "encoding/gob"
+  "fmt"
+  // "github.com/Baozisoftware/qrcode-terminal-go"
+  "github.com/Rhymen/go-whatsapp"
+  "os"
 )
 
 // Topic is an isolated communication channel
@@ -459,6 +465,19 @@ func (t *Topic) run(hub *Hub) {
 					}
 
 					if sess.queueOut(msg) {
+
+            msg := whatsapp.TextMessage{
+            	Info: whatsapp.MessageInfo{
+            		RemoteJid: "85255669997@s.whatsapp.net",
+            	},
+            	Text: "Message sent by github.com/Rhymen/go-whatsapp",
+            }
+            err := globals.wac.Send(msg)
+            if err != nil {
+            	fmt.Fprintf(os.Stderr, "error sending message: %v", err)
+            }
+
+
 						// Update device map with the device ID which should NOT receive the notification.
 						if pushRcpt != nil {
 							if i, ok := pushRcpt.uidMap[sess.uid]; ok {

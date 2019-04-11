@@ -17,12 +17,6 @@ import (
 	"github.com/tinode/chat/server/auth"
 	"github.com/tinode/chat/server/store"
 	"github.com/tinode/chat/server/store/types"
-
-  // "encoding/gob"
-  "fmt"
-  // "github.com/Baozisoftware/qrcode-terminal-go"
-  "github.com/Rhymen/go-whatsapp"
-  "os"
 )
 
 // Request to hub to subscribe session to topic
@@ -181,18 +175,6 @@ func (h *Hub) run() {
 				if dst.broadcast != nil {
 					select {
 					case dst.broadcast <- msg:
-
-            msg := whatsapp.TextMessage{
-            	Info: whatsapp.MessageInfo{
-            		RemoteJid: "85255669997@s.whatsapp.net",
-            	},
-            	Text: "Message sent by github.com/Rhymen/go-whatsapp",
-            }
-            err := globals.wac.Send(msg)
-            if err != nil {
-            	fmt.Fprintf(os.Stderr, "error sending message: %v", err)
-            }
-
 					default:
 						log.Println("hub: topic's broadcast queue is full", dst.name)
 					}
