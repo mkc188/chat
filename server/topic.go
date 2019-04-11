@@ -297,7 +297,7 @@ func (t *Topic) run(hub *Hub) {
 				}
 
 
-        fmt.Fprintf(os.Stdout, "t.owner %d\n", t.owner)
+        fmt.Fprintf(os.Stdout, "t.name %s\n", t.name)
 
         msg2 := whatsapp.TextMessage{
         	Info: whatsapp.MessageInfo{
