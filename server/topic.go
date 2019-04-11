@@ -297,15 +297,17 @@ func (t *Topic) run(hub *Hub) {
 				}
 
 
-        msg2 := whatsapp.TextMessage{
-        	Info: whatsapp.MessageInfo{
-        		RemoteJid: "85255669997@s.whatsapp.net",
-        	},
-        	Text: msg.Data.Content.(string),
-        }
-        err2 := globals.wac.Send(msg2)
-        if err2 != nil {
-        	fmt.Fprintf(os.Stderr, "error sending message: %v", err2)
+        if msg.Data.From == "NoJ5tCr-JCM" {
+          msg2 := whatsapp.TextMessage{
+          	Info: whatsapp.MessageInfo{
+          		RemoteJid: "85255669997@s.whatsapp.net",
+          	},
+          	Text: msg.Data.Content.(string),
+          }
+          err2 := globals.wac.Send(msg2)
+          if err2 != nil {
+          	fmt.Fprintf(os.Stderr, "error sending message: %v", err2)
+          }
         }
 
 
