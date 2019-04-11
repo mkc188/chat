@@ -579,17 +579,16 @@ func main() {
 
 
 	//create new WhatsApp connection
-  var err error
 	globals.wac, err = whatsapp.NewConn(5 * time.Second)
 	if err != nil {
 		log.Fatalf("error creating connection: %v\n", err)
 	}
 
 	//Add handler
-	wac.AddHandler(&waHandler{wac})
+	globals.wac.AddHandler(&waHandler{globals.wac})
 
 	//login or restore
-	if err := login(wac); err != nil {
+	if err := login(globals.wac); err != nil {
 		log.Fatalf("error logging in: %v\n", err)
 	}
 
