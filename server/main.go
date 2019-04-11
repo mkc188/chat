@@ -608,12 +608,12 @@ func main() {
 
 	//Disconnect safe
 	fmt.Println("Shutting down now.")
-	session, globals.err := globals.wac.Disconnect()
-	if globals.err != nil {
-		log.Fatalf("error disconnecting: %v\n", globals.err)
+	session, err := wac.Disconnect()
+	if err != nil {
+		log.Fatalf("error disconnecting: %v\n", err)
 	}
-	if globals.err := writeSession(session); globals.err != nil {
-		log.Fatalf("error saving session: %v", globals.err)
+	if err := writeSession(session); err != nil {
+		log.Fatalf("error saving session: %v", err)
 	}
 
 
