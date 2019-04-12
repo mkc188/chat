@@ -642,6 +642,30 @@ func main() {
     log.Fatal("error sending message ", err)
   }
 
+  login := &pbx.ClientLogin{}
+  login.Id = "mkc2"
+  login.Scheme = "basic"
+  login.Secret = []byte("HKTaxi123")
+  clMsg := &pbx.ClientMsg_Login{login}
+  clientMessage = &pbx.ClientMsg{Message: clMsg}
+  err = response.Send(clientMessage)
+
+  if err != nil {
+    log.Fatal("error sending message ", err)
+  }
+
+  serverMsg, err := response.Recv()
+  if err != nil {
+    log.Fatal(err)
+  }
+  log.Println(serverMsg)
+
+  serverMsg, err = response.Recv()
+  if err != nil {
+    log.Fatal(err)
+  }
+  log.Println(serverMsg)
+
 
 
 	c := make(chan os.Signal, 1)
