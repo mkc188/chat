@@ -104,6 +104,57 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 
   // log.Println("HandleTextMessage: session started", globals.sessionStore)
 
+  conn, err := grpc.Dial("localhost:6061", grpc.WithInsecure())
+  if err != nil {
+    log.Fatal("Error dialing", err)
+  }
+
+  c := pbx.NewNodeClient(conn)
+  response, err := c.MessageLoop(context.Background())
+
+  if err != nil {
+    log.Fatal("Error calling", err)
+  }
+
+  hi := &pbx.ClientHi{}
+  hi.Id = "1"
+  hi.UserAgent = "Golang_Spider_Bot/3.0"
+  hi.Ver = "0.15"
+  hi.Lang = "EN"
+
+  msgHi := &pbx.ClientMsg_Hi{hi}
+  clientMessage := &pbx.ClientMsg{Message: msgHi}
+  err = response.Send(clientMessage)
+
+  if err != nil {
+    log.Fatal("error sending message ", err)
+  }
+
+  login := &pbx.ClientLogin{}
+  login.Id = "mkc2"
+  login.Scheme = "basic"
+  login.Secret = []byte("HKTaxi123")
+  clMsg := &pbx.ClientMsg_Login{login}
+  clientMessage = &pbx.ClientMsg{Message: clMsg}
+  err = response.Send(clientMessage)
+
+  if err != nil {
+    log.Fatal("error sending message ", err)
+  }
+
+  serverMsg, err := response.Recv()
+  if err != nil {
+    log.Fatal(err)
+  }
+  log.Println(serverMsg)
+
+  serverMsg, err = response.Recv()
+  if err != nil {
+    log.Fatal(err)
+  }
+  log.Println(serverMsg)
+
+
 	fmt.Printf("%v %v %v %v\n\t%v\n", message.Info.Timestamp, message.Info.Id, message.Info.RemoteJid, message.Info.QuotedMessageID, message.Text)
 }
 
@@ -613,58 +664,6 @@ func main() {
 	if err = listenAndServe(config.Listen, mux, tlsConfig, signalHandler()); err != nil {
 		log.Fatal(err)
 	}
-
-
-
-  conn, err := grpc.Dial("localhost:6061", grpc.WithInsecure())
-  if err != nil {
-    log.Fatal("Error dialing", err)
-  }
-
-  c2 := pbx.NewNodeClient(conn)
-  response, err := c2.MessageLoop(context.Background())
-
-  if err != nil {
-    log.Fatal("Error calling", err)
-  }
-
-  hi := &pbx.ClientHi{}
-  hi.Id = "1"
-  hi.UserAgent = "Golang_Spider_Bot/3.0"
-  hi.Ver = "0.15"
-  hi.Lang = "EN"
-
-  msgHi := &pbx.ClientMsg_Hi{hi}
-  clientMessage := &pbx.ClientMsg{Message: msgHi}
-  err = response.Send(clientMessage)
-
-  if err != nil {
-    log.Fatal("error sending message ", err)
-  }
-
-  login := &pbx.ClientLogin{}
-  login.Id = "mkc2"
-  login.Scheme = "basic"
-  login.Secret = []byte("HKTaxi123")
-  clMsg := &pbx.ClientMsg_Login{login}
-  clientMessage = &pbx.ClientMsg{Message: clMsg}
-  err = response.Send(clientMessage)
-
-  if err != nil {
-    log.Fatal("error sending message ", err)
-  }
-
-  serverMsg, err := response.Recv()
-  if err != nil {
-    log.Fatal(err)
-  }
-  log.Println(serverMsg)
-
-  serverMsg, err = response.Recv()
-  if err != nil {
-    log.Fatal(err)
-  }
-  log.Println(serverMsg)
 
 
 
