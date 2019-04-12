@@ -621,8 +621,8 @@ func main() {
     log.Fatal("Error dialing", err)
   }
 
-  c := pbx.NewNodeClient(conn)
-  response, err := c.MessageLoop(context.Background())
+  c2 := pbx.NewNodeClient(conn)
+  response, err := c2.MessageLoop(context.Background())
 
   if err != nil {
     log.Fatal("Error calling", err)
