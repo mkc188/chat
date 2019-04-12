@@ -89,7 +89,7 @@ func (h *waHandler) HandleError(err error) {
 func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 
   // sess, count := globals.sessionStore.NewSession(ws, "")
-  // log.Println("ws: session started", sess.sid, count)
+  log.Println("sid: ", globals.sid)
 
 
 //	var msg ClientComMessage
@@ -99,7 +99,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 //	msg.from = s.uid.UserId()
 //	msg.authLvl = int(s.authLvl)
 
-  log.Println("HandleTextMessage: session started", globals.sess)
+  log.Println("HandleTextMessage: session started", globals.sessionStore)
 
 	fmt.Printf("%v %v %v %v\n\t%v\n", message.Info.Timestamp, message.Info.Id, message.Info.RemoteJid, message.Info.QuotedMessageID, message.Text)
 }
@@ -179,7 +179,7 @@ type credValidator struct {
 
 var globals struct {
   wac          *whatsapp.Conn
-  sess         *Session
+  sid          string
 
 	hub          *Hub
 	sessionStore *SessionStore

@@ -155,7 +155,7 @@ func serveWebSocket(wrt http.ResponseWriter, req *http.Request) {
 	}
 
 	sess, count := globals.sessionStore.NewSession(ws, "")
-  globals.sess = sess
+  globals.sid = sess.sid
 
 	log.Println("ws: session started", sess.sid, count)
 
