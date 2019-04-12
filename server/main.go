@@ -22,6 +22,9 @@ import (
 	"strings"
 	"time"
 
+  "context"
+  "github.com/tinode/chat/pbx"
+
 	// For stripping comments from JSON config
 	jcr "github.com/DisposaBoy/JsonConfigReader"
 
@@ -89,7 +92,7 @@ func (h *waHandler) HandleError(err error) {
 func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 
   // sess, count := globals.sessionStore.NewSession(ws, "")
-  log.Println("sid: ", globals.sid)
+  // log.Println("ws: session started", sess.sid, count)
 
 
 //	var msg ClientComMessage
@@ -99,7 +102,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 //	msg.from = s.uid.UserId()
 //	msg.authLvl = int(s.authLvl)
 
-  log.Println("HandleTextMessage: session started", globals.sessionStore)
+  // log.Println("HandleTextMessage: session started", globals.sessionStore)
 
 	fmt.Printf("%v %v %v %v\n\t%v\n", message.Info.Timestamp, message.Info.Id, message.Info.RemoteJid, message.Info.QuotedMessageID, message.Text)
 }
@@ -179,7 +182,6 @@ type credValidator struct {
 
 var globals struct {
   wac          *whatsapp.Conn
-  sid          string
 
 	hub          *Hub
 	sessionStore *SessionStore
@@ -611,6 +613,36 @@ func main() {
 	if err = listenAndServe(config.Listen, mux, tlsConfig, signalHandler()); err != nil {
 		log.Fatal(err)
 	}
+
+
+
+  conn, err := grpc.Dial("localhost:6061", grpc.WithInsecure())
+  if err != nil {
+    log.Fatal("Error dialing", err)
+  }
+
+  c := pbx.NewNodeClient(conn)
+  response, err := c.MessageLoop(context.Background())
+
+  if err != nil {
+    log.Fatal("Error calling", err)
+  }
+
+  hi := &pbx.ClientHi{}
+  hi.Id = "1"
+  hi.UserAgent = "Golang_Spider_Bot/3.0"
+  hi.Ver = "0.15"
+  hi.Lang = "EN"
+
+  msgHi := &pbx.ClientMsg_Hi{hi}
+  clientMessage := &pbx.ClientMsg{Message: msgHi}
+  err = response.Send(clientMessage)
+
+  if err != nil {
+    log.Fatal("error sending message ", err)
+  }
+
+
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
