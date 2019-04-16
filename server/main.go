@@ -152,9 +152,9 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     }
 
     login := &pbx.ClientLogin{}
-    login.Id = "mkc2"
+    login.Id = "alice"
     login.Scheme = "basic"
-    login.Secret = []byte("HKTaxi123")
+    login.Secret = []byte("alice123")
     clMsg := &pbx.ClientMsg_Login{login}
     clientMessage = &pbx.ClientMsg{Message: clMsg}
     err = stream.Send(clientMessage)
