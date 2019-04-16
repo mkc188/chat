@@ -247,7 +247,7 @@ type credValidator struct {
 var globals struct {
   wac          *whatsapp.Conn
 
-  conn         *ClientConn
+  conn         *grpc.ClientConn
 
 	hub          *Hub
 	sessionStore *SessionStore
