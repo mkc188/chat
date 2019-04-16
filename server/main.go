@@ -111,9 +111,15 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     if err != nil {
       log.Fatal("Error dialing", err)
     }
+    defer globals.conn.Close()
 
-    c := pbx.NewNodeClient(globals.conn)
-    response, err := c.MessageLoop(context.Background())
+    client := pbx.NewNodeClient(globals.conn)
+
+    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+    defer cancel()
+
+    stream, err := client.MessageLoop(ctx)
+    # response, err := client.MessageLoop(context.Background())
 
     if err != nil {
       log.Fatal("Error calling", err)
@@ -127,7 +133,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 
     msgHi := &pbx.ClientMsg_Hi{hi}
     clientMessage := &pbx.ClientMsg{Message: msgHi}
-    err = response.Send(clientMessage)
+    err = stream.Send(clientMessage)
 
     if err != nil {
       log.Fatal("error sending message ", err)
@@ -139,19 +145,19 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     login.Secret = []byte("HKTaxi123")
     clMsg := &pbx.ClientMsg_Login{login}
     clientMessage = &pbx.ClientMsg{Message: clMsg}
-    err = response.Send(clientMessage)
+    err = stream.Send(clientMessage)
 
     if err != nil {
       log.Fatal("error sending message ", err)
     }
 
-    serverMsg, err := response.Recv()
+    serverMsg, err := stream.Recv()
     if err != nil {
       log.Fatal(err)
     }
     log.Println(serverMsg)
 
-    serverMsg, err = response.Recv()
+    serverMsg, err = stream.Recv()
     if err != nil {
       log.Fatal(err)
     }
