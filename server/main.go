@@ -199,18 +199,19 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     <-waitc
 
 
-  }
+  } else {
+    pub := &pbx.ClientPub{}
+    pub.Topic = "usrNoJ5tCr-JCM"
+    pub.Content = []byte(message.Text)
+    msgPub := &pbx.ClientMsg_Pub{pub}
+    clientMessage2 := &pbx.ClientMsg{Message: msgPub}
+    err2 := globals.stream.Send(clientMessage2)
+    if err2 != nil {
+      log.Fatal("error sending message ", err2)
+    }
+    log.Printf("%v", msgPub)
 
-  pub := &pbx.ClientPub{}
-  pub.Topic = "usrNoJ5tCr-JCM"
-  pub.Content = []byte(message.Text)
-  msgPub := &pbx.ClientMsg_Pub{pub}
-  clientMessage2 := &pbx.ClientMsg{Message: msgPub}
-  err2 := globals.stream.Send(clientMessage2)
-  if err2 != nil {
-    log.Fatal("error sending message ", err2)
   }
-  log.Printf("%v", msgPub)
 
 	fmt.Printf("%v %v %v %v\n\t%v\n", message.Info.Timestamp, message.Info.Id, message.Info.RemoteJid, message.Info.QuotedMessageID, message.Text)
 }
