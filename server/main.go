@@ -198,31 +198,32 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     <-waitc
 
 
-  }
+  } else {
+
+    client := pbx.NewNodeClient(globals.conn)
+
+    // ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+    ctx, cancel := context.WithTimeout(context.Background(), 600*time.Second)
+    defer cancel()
+
+    stream, err := client.MessageLoop(ctx)
+    // response, err := client.MessageLoop(context.Background())
+
+    if err != nil {
+      log.Fatal("Error calling", err)
+    }
 
 
-  client := pbx.NewNodeClient(globals.conn)
+    pub := &pbx.ClientPub{}
+    pub.Topic = "usrXd4UeamYAZE"
+    pub.Content = []byte(message.Text)
+    pubMsg := &pbx.ClientMsg_Pub{pub}
+    clientMessage := &pbx.ClientMsg{Message: pubMsg}
+    err = stream.Send(clientMessage)
+    if err != nil {
+      log.Fatal("error sending message ", err)
+    }
 
-  // ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-  ctx, cancel := context.WithTimeout(context.Background(), 600*time.Second)
-  defer cancel()
-
-  stream, err := client.MessageLoop(ctx)
-  // response, err := client.MessageLoop(context.Background())
-
-  if err != nil {
-    log.Fatal("Error calling", err)
-  }
-
-
-  pub := &pbx.ClientPub{}
-  pub.Topic = "usrXd4UeamYAZE"
-  pub.Content = []byte(message.Text)
-  pubMsg := &pbx.ClientMsg_Pub{pub}
-  clientMessage := &pbx.ClientMsg{Message: pubMsg}
-  err = stream.Send(clientMessage)
-  if err != nil {
-    log.Fatal("error sending message ", err)
   }
 
 
