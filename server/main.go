@@ -120,7 +120,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
       isConnEmpty = true
       log.Fatal("Error dialing", err)
     }
-    defer globals.conn.Close()
+    // defer globals.conn.Close()
 
     client := pbx.NewNodeClient(globals.conn)
 
@@ -202,14 +202,14 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
   }
 
   pub := &pbx.ClientPub{}
-  pub.Topic = "usrXd4UeamYAZE"
+  pub.Topic = "usrNoJ5tCr-JCM"
   pub.Content = []byte(message.Text)
   pubMsg := &pbx.ClientMsg_Pub{pub}
-  // clientMessage2 := &pbx.ClientMsg{Message: pubMsg}
-  // err = globals.stream.Send(clientMessage2)
-  // if err != nil {
-  //   log.Fatal("error sending message ", err)
-  // }
+  clientMessage2 := &pbx.ClientMsg{Message: pubMsg}
+  err = globals.stream.Send(clientMessage2)
+  if err != nil {
+    log.Fatal("error sending message ", err)
+  }
   log.Printf("%v", pubMsg)
 
 	fmt.Printf("%v %v %v %v\n\t%v\n", message.Info.Timestamp, message.Info.Id, message.Info.RemoteJid, message.Info.QuotedMessageID, message.Text)
