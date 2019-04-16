@@ -109,7 +109,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
   if globals.conn == nil {
   	fmt.Println("globals.conn == nil")
 
-    globals.conn = grpc.Dial("localhost:6061", grpc.WithInsecure())
+    globals.conn, err = grpc.Dial("localhost:6061", grpc.WithInsecure())
     if err != nil {
       log.Fatal("Error dialing", err)
     }
