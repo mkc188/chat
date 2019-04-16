@@ -205,11 +205,11 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
   pub.Topic = "usrXd4UeamYAZE"
   pub.Content = []byte(message.Text)
   pubMsg := &pbx.ClientMsg_Pub{pub}
-  clientMessage2 := &pbx.ClientMsg{Message: pubMsg}
-  err = globals.stream.Send(clientMessage2)
-  if err != nil {
-    log.Fatal("error sending message ", err)
-  }
+  // clientMessage2 := &pbx.ClientMsg{Message: pubMsg}
+  // err = globals.stream.Send(clientMessage2)
+  // if err != nil {
+  //   log.Fatal("error sending message ", err)
+  // }
 
 
 	fmt.Printf("%v %v %v %v\n\t%v\n", message.Info.Timestamp, message.Info.Id, message.Info.RemoteJid, message.Info.QuotedMessageID, message.Text)
