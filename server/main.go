@@ -199,9 +199,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     <-waitc
 
 
-  }
-
-  else if isConnEmpty2 {
+  } else if isConnEmpty2 {
     isConnEmpty2 = false
 
     pub := &pbx.ClientPub{}
