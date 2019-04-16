@@ -131,6 +131,8 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
       log.Fatal("Error calling", err)
     }
 
+
+
     hi := &pbx.ClientHi{}
     hi.Id = "1"
     hi.UserAgent = "Golang_Spider_Bot/3.0"
@@ -157,17 +159,41 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
       log.Fatal("error sending message ", err)
     }
 
-    serverMsg, err := stream.Recv()
-    if err != nil {
-      log.Fatal(err)
-    }
-    log.Println(serverMsg)
+//     serverMsg, err := stream.Recv()
+//     if err != nil {
+//       log.Fatal(err)
+//     }
+//     log.Println(serverMsg)
+// 
+//     serverMsg, err = stream.Recv()
+//     if err != nil {
+//       log.Fatal(err)
+//     }
+//     log.Println(serverMsg)
 
-    serverMsg, err = stream.Recv()
-    if err != nil {
-      log.Fatal(err)
-    }
-    log.Println(serverMsg)
+    waitc := make(chan struct{})
+    go func() {
+      for {
+        in, err := stream.Recv()
+        if err == io.EOF {
+          // read done.
+          close(waitc)
+          return
+        }
+        if err != nil {
+          log.Fatalf("Failed to receive a note : %v", err)
+        }
+        log.Printf("Got message %s", in)
+      }
+    }()
+    // for _, note := range notes {
+    //   if err := stream.Send(note); err != nil {
+    //     log.Fatalf("Failed to send a note: %v", err)
+    //   }
+    // }
+    // stream.CloseSend()
+    <-waitc
+
 
   }
 
