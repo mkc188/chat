@@ -292,7 +292,7 @@ var globals struct {
   wac          *whatsapp.Conn
 
   conn         *grpc.ClientConn
-  stream       *pbx.Node_MessageLoopClient
+  stream       pbx.Node_MessageLoopClient
 
 	hub          *Hub
 	sessionStore *SessionStore
