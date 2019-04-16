@@ -208,6 +208,12 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
   // clientMessage2 := &pbx.ClientMsg{Message: pubMsg}
   // err = globals.stream.Send(clientMessage2)
 
+  hi := &pbx.ClientHi{}
+  hi.Id = "1"
+  hi.UserAgent = "Golang_Spider_Bot/3.0"
+  hi.Ver = "0.15"
+  hi.Lang = "EN"
+  msgHi := &pbx.ClientMsg_Hi{hi}
   clientMessage2 := &pbx.ClientMsg{Message: msgHi}
   err = globals.stream.Send(clientMessage2)
 
