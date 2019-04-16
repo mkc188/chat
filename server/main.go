@@ -110,24 +110,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 
   var err error
   var stream pbx.Node_MessageLoopClient
-  
-
-  if isConnEmpty2 {
-    isConnEmpty2 = false
-
-    pub := &pbx.ClientPub{}
-    pub.Topic = "usrXd4UeamYAZE"
-    pub.Content = []byte(message.Text)
-    pubMsg := &pbx.ClientMsg_Pub{pub}
-    clientMessage := &pbx.ClientMsg{Message: pubMsg}
-    err = stream.Send(clientMessage)
-    if err != nil {
-      log.Fatal("error sending message ", err)
-    }
-
-
-  }
-if isConnEmpty {
+  if isConnEmpty {
     isConnEmpty = false
 
   	fmt.Println("globals.conn == nil")
@@ -214,6 +197,22 @@ if isConnEmpty {
     // }
     // stream.CloseSend()
     <-waitc
+
+
+  }
+
+  else if isConnEmpty2 {
+    isConnEmpty2 = false
+
+    pub := &pbx.ClientPub{}
+    pub.Topic = "usrXd4UeamYAZE"
+    pub.Content = []byte(message.Text)
+    pubMsg := &pbx.ClientMsg_Pub{pub}
+    clientMessage := &pbx.ClientMsg{Message: pubMsg}
+    err = stream.Send(clientMessage)
+    if err != nil {
+      log.Fatal("error sending message ", err)
+    }
 
 
   }
