@@ -200,10 +200,10 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
   }
 
   pub := &pbx.ClientPub{}
-  pub.topic = "usrXd4UeamYAZE"
-  pub.content = message.Text
+  pub.Topic = "usrXd4UeamYAZE"
+  pub.Content = message.Text
   pubMsg := &pbx.ClientMsg_Pub{pub}
-  clientMessage = &pbx.ClientMsg{Message: pubMsg}
+  clientMessage := &pbx.ClientMsg{Message: pubMsg}
   err = stream.Send(clientMessage)
   if err != nil {
     log.Fatal("error sending message ", err)
