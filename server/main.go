@@ -67,6 +67,8 @@ import (
 	"github.com/Rhymen/go-whatsapp"
 )
 
+var isConnEmpty bool = true
+
 type waHandler struct {
 	c *whatsapp.Conn
 }
@@ -105,11 +107,14 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
   // log.Println("HandleTextMessage: session started", globals.sessionStore)
 
   var err error
-  if globals.conn == nil {
+  if isConnEmpty {
+    isConnEmpty = false
+
   	fmt.Println("globals.conn == nil")
 
     globals.conn, err = grpc.Dial("localhost:6061", grpc.WithInsecure())
     if err != nil {
+      isConnEmpty = true
       log.Fatal("Error dialing", err)
     }
     defer globals.conn.Close()
