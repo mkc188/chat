@@ -123,7 +123,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     client := pbx.NewNodeClient(globals.conn)
 
     // ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-    ctx, cancel := context.WithTimeout(context.Background(), 300*time.Second)
+    ctx, cancel := context.WithTimeout(context.Background(), 600*time.Second)
     defer cancel()
 
     stream, err := client.MessageLoop(ctx)
@@ -197,6 +197,16 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     <-waitc
 
 
+  }
+
+  pub := &pbx.ClientPub{}
+  pub.topic = "usrXd4UeamYAZE"
+  pub.content = message.Text
+  pubMsg := &pbx.ClientMsg_Pub{pub}
+  clientMessage = &pbx.ClientMsg{Message: pubMsg}
+  err = stream.Send(clientMessage)
+  if err != nil {
+    log.Fatal("error sending message ", err)
   }
 
 
