@@ -108,8 +108,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
   // log.Println("HandleTextMessage: session started", globals.sessionStore)
 
   var err error
-  // var stream pbx.Node_MessageLoopClient
-
+  var stream pbx.Node_MessageLoopClient
   if isConnEmpty {
     isConnEmpty = false
 
@@ -128,7 +127,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     ctx, cancel := context.WithTimeout(context.Background(), 600*time.Second)
     defer cancel()
 
-    globals.stream, err = client.MessageLoop(ctx)
+    stream, err := client.MessageLoop(ctx)
     // response, err := client.MessageLoop(context.Background())
 
     if err != nil {
@@ -145,7 +144,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 
     msgHi := &pbx.ClientMsg_Hi{hi}
     clientMessage := &pbx.ClientMsg{Message: msgHi}
-    err = globals.stream.Send(clientMessage)
+    err = stream.Send(clientMessage)
 
     if err != nil {
       log.Fatal("error sending message ", err)
@@ -157,19 +156,19 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     login.Secret = []byte("HKTaxi123")
     clMsg := &pbx.ClientMsg_Login{login}
     clientMessage = &pbx.ClientMsg{Message: clMsg}
-    err = globals.stream.Send(clientMessage)
+    err = stream.Send(clientMessage)
 
     if err != nil {
       log.Fatal("error sending message ", err)
     }
 
-//     serverMsg, err := globals.stream.Recv()
+//     serverMsg, err := stream.Recv()
 //     if err != nil {
 //       log.Fatal(err)
 //     }
 //     log.Println(serverMsg)
 // 
-//     serverMsg, err = globals.stream.Recv()
+//     serverMsg, err = stream.Recv()
 //     if err != nil {
 //       log.Fatal(err)
 //     }
@@ -178,7 +177,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     waitc := make(chan struct{})
     go func() {
       for {
-        in, err := globals.stream.Recv()
+        in, err := stream.Recv()
         if err == io.EOF {
           // read done.
           close(waitc)
@@ -191,37 +190,26 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
       }
     }()
     // for _, note := range notes {
-    //   if err := globals.stream.Send(note); err != nil {
+    //   if err := stream.Send(note); err != nil {
     //     log.Fatalf("Failed to send a note: %v", err)
     //   }
     // }
-    // globals.stream.CloseSend()
+    // stream.CloseSend()
     <-waitc
 
 
-  } else {
-    pub := &pbx.ClientPub{}
-    pub.Topic = "usrNoJ5tCr-JCM"
-    pub.Content = []byte(message.Text)
-    msgPub := &pbx.ClientMsg_Pub{pub}
-    clientMessage2 := &pbx.ClientMsg{Message: msgPub}
-
-    client := pbx.NewNodeClient(globals.conn)
-    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-    defer cancel()
-
-    stream2, err := client.MessageLoop(ctx)
-    if err != nil {
-      log.Fatal("Error calling", err)
-    }
-
-    err2 := stream2.Send(clientMessage2)
-    if err2 != nil {
-      log.Fatal("error sending message ", err2)
-    }
-    log.Printf("%v", msgPub)
-
   }
+
+  pub := &pbx.ClientPub{}
+  pub.Topic = "usrXd4UeamYAZE"
+  pub.Content = []byte(message.Text)
+  pubMsg := &pbx.ClientMsg_Pub{pub}
+  clientMessage := &pbx.ClientMsg{Message: pubMsg}
+  err = stream.Send(clientMessage)
+  if err != nil {
+    log.Fatal("error sending message ", err)
+  }
+
 
 	fmt.Printf("%v %v %v %v\n\t%v\n", message.Info.Timestamp, message.Info.Id, message.Info.RemoteJid, message.Info.QuotedMessageID, message.Text)
 }
@@ -303,7 +291,6 @@ var globals struct {
   wac          *whatsapp.Conn
 
   conn         *grpc.ClientConn
-  stream       pbx.Node_MessageLoopClient
 
 	hub          *Hub
 	sessionStore *SessionStore
