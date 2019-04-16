@@ -108,7 +108,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
   // log.Println("HandleTextMessage: session started", globals.sessionStore)
 
   var err error
-  var stream *pbx.Node_MessageLoopClient
+  var stream pbx.Node_MessageLoopClient
   if isConnEmpty {
     isConnEmpty = false
 
@@ -127,7 +127,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     ctx, cancel := context.WithTimeout(context.Background(), 600*time.Second)
     defer cancel()
 
-    stream, err := client.MessageLoop(ctx)
+    stream, err = client.MessageLoop(ctx)
     // response, err := client.MessageLoop(context.Background())
 
     if err != nil {
