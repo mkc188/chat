@@ -104,7 +104,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 
   // log.Println("HandleTextMessage: session started", globals.sessionStore)
 
-  var err
+  var err error
 	fmt.Println("globals.conn == err")
   if globals.conn == nil {
   	fmt.Println("globals.conn == nil")
@@ -121,7 +121,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     defer cancel()
 
     stream, err := client.MessageLoop(ctx)
-    # response, err := client.MessageLoop(context.Background())
+    // response, err := client.MessageLoop(context.Background())
 
     if err != nil {
       log.Fatal("Error calling", err)
