@@ -105,7 +105,6 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
   // log.Println("HandleTextMessage: session started", globals.sessionStore)
 
   var err error
-	fmt.Println("globals.conn == err")
   if globals.conn == nil {
   	fmt.Println("globals.conn == nil")
 
