@@ -111,7 +111,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
   var err error
   // var stream pbx.Node_MessageLoopClient
   if isConnEmpty {
-    isConnEmpty = false
+    // isConnEmpty = false
 
   	fmt.Println("globals.conn == nil")
 
