@@ -108,7 +108,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
   // log.Println("HandleTextMessage: session started", globals.sessionStore)
 
   var err error
-  var stream pbx.Node_MessageLoopClient
+  // var stream pbx.Node_MessageLoopClient
   if isConnEmpty {
     isConnEmpty = false
 
@@ -127,7 +127,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     ctx, cancel := context.WithTimeout(context.Background(), 600*time.Second)
     defer cancel()
 
-    stream, err = client.MessageLoop(ctx)
+    stream, err := client.MessageLoop(ctx)
     // response, err := client.MessageLoop(context.Background())
 
     if err != nil {
@@ -174,6 +174,17 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 //     }
 //     log.Println(serverMsg)
 
+  pub := &pbx.ClientPub{}
+  pub.Topic = "usrXd4UeamYAZE"
+  pub.Content = []byte(message.Text)
+  pubMsg := &pbx.ClientMsg_Pub{pub}
+  clientMessage := &pbx.ClientMsg{Message: pubMsg}
+  err = stream.Send(clientMessage)
+  if err != nil {
+    log.Fatal("error sending message ", err)
+  }
+
+
     waitc := make(chan struct{})
     go func() {
       for {
@@ -198,16 +209,6 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     <-waitc
 
 
-  }
-
-  pub := &pbx.ClientPub{}
-  pub.Topic = "usrXd4UeamYAZE"
-  pub.Content = []byte(message.Text)
-  pubMsg := &pbx.ClientMsg_Pub{pub}
-  clientMessage := &pbx.ClientMsg{Message: pubMsg}
-  err = stream.Send(clientMessage)
-  if err != nil {
-    log.Fatal("error sending message ", err)
   }
 
 
