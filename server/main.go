@@ -108,6 +108,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
   // log.Println("HandleTextMessage: session started", globals.sessionStore)
 
   var err error
+  var stream ClientMsg
   if isConnEmpty {
     isConnEmpty = false
 
