@@ -104,12 +104,13 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 
   // log.Println("HandleTextMessage: session started", globals.sessionStore)
 
-  conn, err := grpc.Dial("localhost:6061", grpc.WithInsecure())
+  var err
+  globals.conn = grpc.Dial("localhost:6061", grpc.WithInsecure())
   if err != nil {
     log.Fatal("Error dialing", err)
   }
 
-  c := pbx.NewNodeClient(conn)
+  c := pbx.NewNodeClient(globals.conn)
   response, err := c.MessageLoop(context.Background())
 
   if err != nil {
@@ -233,6 +234,8 @@ type credValidator struct {
 
 var globals struct {
   wac          *whatsapp.Conn
+
+  conn         *ClientConn
 
 	hub          *Hub
 	sessionStore *SessionStore
