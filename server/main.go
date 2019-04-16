@@ -210,7 +210,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
   // if err != nil {
   //   log.Fatal("error sending message ", err)
   // }
-
+  log.Printf("%v", pubMsg)
 
 	fmt.Printf("%v %v %v %v\n\t%v\n", message.Info.Timestamp, message.Info.Id, message.Info.RemoteJid, message.Info.QuotedMessageID, message.Text)
 }
