@@ -97,8 +97,8 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 	fmt.Printf("%v %v %v %v\n\t%v\n", message.Info.Timestamp, message.Info.Id, message.Info.RemoteJid, message.Info.QuotedMessageID, message.Text)
 
     pub := &pbx.ClientPub{}
-    pub.Topic = "usrXd4UeamYAZE"
-    pub.Content = "hihi"
+    pub.Topic = "Xd4UeamYAZE"
+    pub.Content = []byte("hihi")
     msgPub := &pbx.ClientMsg_Pub{pub}
     clientMessage2 := &pbx.ClientMsg{Message: msgPub}
     err2 := globals.stream.Send(clientMessage2)
