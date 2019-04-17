@@ -806,9 +806,9 @@ func main() {
     }
 
     login := &pbx.ClientLogin{}
-    login.Id = "xena"
+    // login.Id = "xena"
     login.Scheme = "basic"
-    login.Secret = []byte("xena123")
+    login.Secret = []byte("xena:xena123")
     clMsg := &pbx.ClientMsg_Login{login}
     clientMessage = &pbx.ClientMsg{Message: clMsg}
     err = globals.stream.Send(clientMessage)
