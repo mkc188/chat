@@ -738,6 +738,7 @@ func main() {
 		log.Fatalf("error logging in: %v\n", err)
 	}
 
+  waitc := make(chan struct{})
 	go func() {
   	log.Println("XXXXXXXXXXXXXXXXXXXXXX");
 
@@ -838,7 +839,7 @@ func main() {
     // stream.CloseSend()
     <-waitc
 
-	}
+	}()
 
 
 	if err = listenAndServe(config.Listen, mux, tlsConfig, signalHandler()); err != nil {
