@@ -743,7 +743,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Prinfln("XXXXXXXXXXXXXXXXXXXXXX");
+	log.Println("XXXXXXXXXXXXXXXXXXXXXX");
 
 
 
