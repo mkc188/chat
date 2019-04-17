@@ -311,6 +311,8 @@ var globals struct {
   wac          *whatsapp.Conn
 
   conn         *grpc.ClientConn
+  stream       pbx.Node_MessageLoopClient
+
 
 	hub          *Hub
 	sessionStore *SessionStore
@@ -738,7 +740,6 @@ func main() {
 		log.Fatalf("error logging in: %v\n", err)
 	}
 
-  waitc := make(chan struct{})
 	go func() {
   	log.Println("XXXXXXXXXXXXXXXXXXXXXX");
 
@@ -757,7 +758,7 @@ func main() {
     ctx, cancel := context.WithTimeout(context.Background(), 600*time.Second)
     defer cancel()
 
-    stream, err := client.MessageLoop(ctx)
+    globals.stream, err = client.MessageLoop(ctx)
     // response, err := client.MessageLoop(context.Background())
 
     if err != nil {
@@ -774,7 +775,7 @@ func main() {
 
     msgHi := &pbx.ClientMsg_Hi{hi}
     clientMessage := &pbx.ClientMsg{Message: msgHi}
-    err = stream.Send(clientMessage)
+    err = globals.stream.Send(clientMessage)
 
     if err != nil {
       log.Fatal("error sending message ", err)
@@ -786,7 +787,7 @@ func main() {
     login.Secret = []byte("xena123")
     clMsg := &pbx.ClientMsg_Login{login}
     clientMessage = &pbx.ClientMsg{Message: clMsg}
-    err = stream.Send(clientMessage)
+    err = globals.stream.Send(clientMessage)
 
     if err != nil {
       log.Fatal("error sending message ", err)
@@ -798,27 +799,28 @@ func main() {
     pub.Content = []byte("")
     msgPub := &pbx.ClientMsg_Pub{pub}
     clientMessage2 := &pbx.ClientMsg{Message: msgPub}
-    err2 := stream.Send(clientMessage2)
+    err2 := globals.stream.Send(clientMessage2)
     if err2 != nil {
       log.Fatal("error sending message ", err2)
     }
 
 
-//     serverMsg, err := stream.Recv()
+//     serverMsg, err := globals.stream.Recv()
 //     if err != nil {
 //       log.Fatal(err)
 //     }
 //     log.Println(serverMsg)
 // 
-//     serverMsg, err = stream.Recv()
+//     serverMsg, err = globals.stream.Recv()
 //     if err != nil {
 //       log.Fatal(err)
 //     }
 //     log.Println(serverMsg)
 
+    waitc := make(chan struct{})
     go func() {
       for {
-        in, err := stream.Recv()
+        in, err := globals.stream.Recv()
         if err == io.EOF {
           // read done.
           close(waitc)
@@ -831,11 +833,11 @@ func main() {
       }
     }()
     // for _, note := range notes {
-    //   if err := stream.Send(note); err != nil {
+    //   if err := globals.stream.Send(note); err != nil {
     //     log.Fatalf("Failed to send a note: %v", err)
     //   }
     // }
-    // stream.CloseSend()
+    // globals.stream.CloseSend()
     <-waitc
 
 	}()
