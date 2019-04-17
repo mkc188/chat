@@ -97,7 +97,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 	fmt.Printf("%v %v %v %v\n\t%v\n", message.Info.Timestamp, message.Info.Id, message.Info.RemoteJid, message.Info.QuotedMessageID, message.Text)
 
     sub := &pbx.ClientSub{}
-    sub.Topic = "usrNoJ5tCr-JCM"
+    sub.topic = "usrNoJ5tCr-JCM"
     // sub.Content = []byte("hihi")
     msgSub := &pbx.ClientMsg_Sub{sub}
     clientMessage3 := &pbx.ClientMsg{Message: msgSub}
