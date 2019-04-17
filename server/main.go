@@ -106,9 +106,20 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
       log.Fatal("error sending message ", err3)
     }
 
+    note := &pbx.ClientNote{}
+    note.Topic = "usrNoJ5tCr-JCM"
+    note.What = "kp"
+    msgNote := &pbx.ClientMsg_Note{note}
+    clientMessage5 := &pbx.ClientMsg{Message: msgNote}
+    err5 := globals.stream.Send(clientMessage5)
+    if err5 != nil {
+      log.Fatal("error sending message ", err5)
+    }
+
 
     pub := &pbx.ClientPub{}
     pub.Topic = "usrNoJ5tCr-JCM"
+    pub.Noecho = true
 
     bytes, err4 := json.Marshal(message.Text)
     if err4 != nil {
