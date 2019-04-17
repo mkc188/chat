@@ -97,7 +97,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 	fmt.Printf("%v %v %v %v\n\t%v\n", message.Info.Timestamp, message.Info.Id, message.Info.RemoteJid, message.Info.QuotedMessageID, message.Text)
 
     sub := &pbx.ClientSub{}
-    sub.Topic = "usrXd4UeamYAZE"
+    sub.Topic = "usrNoJ5tCr-JCM"
     // sub.Content = []byte("hihi")
     msgSub := &pbx.ClientMsg_Sub{sub}
     clientMessage3 := &pbx.ClientMsg{Message: msgSub}
@@ -108,7 +108,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 
 
     // pub := &pbx.ClientPub{}
-    // pub.Topic = "usrXd4UeamYAZE"
+    // pub.Topic = "usrNoJ5tCr-JCM"
     // pub.Content = []byte("hihi")
     // msgPub := &pbx.ClientMsg_Pub{pub}
     // clientMessage2 := &pbx.ClientMsg{Message: msgPub}
@@ -192,7 +192,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 
 
     pub := &pbx.ClientPub{}
-    pub.Topic = "usrXd4UeamYAZE"
+    pub.Topic = "usrNoJ5tCr-JCM"
     pub.Content = []byte("")
     msgPub := &pbx.ClientMsg_Pub{pub}
     clientMessage2 := &pbx.ClientMsg{Message: msgPub}
@@ -242,7 +242,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 //     isConnEmpty2 = false
 // 
 //     pub := &pbx.ClientPub{}
-//     pub.Topic = "usrXd4UeamYAZE"
+//     pub.Topic = "usrNoJ5tCr-JCM"
 //     pub.Content = []byte(message.Text)
 //     pubMsg := &pbx.ClientMsg_Pub{pub}
 //     clientMessage := &pbx.ClientMsg{Message: pubMsg}
