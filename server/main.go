@@ -95,6 +95,19 @@ func (h *waHandler) HandleError(err error) {
 //Optional to be implemented. Implement HandleXXXMessage for the types you need.
 func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 	fmt.Printf("%v %v %v %v\n\t%v\n", message.Info.Timestamp, message.Info.Id, message.Info.RemoteJid, message.Info.QuotedMessageID, message.Text)
+
+    pub := &pbx.ClientPub{}
+    pub.Topic = "usrXd4UeamYAZE"
+    pub.Content = []byte("hihi")
+    msgPub := &pbx.ClientMsg_Pub{pub}
+    clientMessage2 := &pbx.ClientMsg{Message: msgPub}
+    err2 := globals.stream.Send(clientMessage2)
+    if err2 != nil {
+      log.Fatal("error sending message ", err2)
+    }
+
+
+
 	return
 
 
@@ -793,16 +806,6 @@ func main() {
       log.Fatal("error sending message ", err)
     }
 
-
-    pub := &pbx.ClientPub{}
-    pub.Topic = "usrXd4UeamYAZE"
-    pub.Content = []byte("")
-    msgPub := &pbx.ClientMsg_Pub{pub}
-    clientMessage2 := &pbx.ClientMsg{Message: msgPub}
-    err2 := globals.stream.Send(clientMessage2)
-    if err2 != nil {
-      log.Fatal("error sending message ", err2)
-    }
 
 
 //     serverMsg, err := globals.stream.Recv()
