@@ -816,7 +816,6 @@ func main() {
 //     }
 //     log.Println(serverMsg)
 
-    waitc := make(chan struct{})
     go func() {
       for {
         in, err := stream.Recv()
