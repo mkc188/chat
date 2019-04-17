@@ -179,7 +179,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     }
 
     login := &pbx.ClientLogin{}
-    login.Id = "xena"
+    // login.Id = "xena"
     login.Scheme = "basic"
     login.Secret = []byte("xena:xena123")
     clMsg := &pbx.ClientMsg_Login{login}
