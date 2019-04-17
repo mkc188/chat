@@ -301,7 +301,7 @@ func (t *Topic) run(hub *Hub) {
         if msg.Data.From == "usrNoJ5tCr-JCM" {
           msg2 := whatsapp.TextMessage{
           	Info: whatsapp.MessageInfo{
-          		RemoteJid: "85255669997@s.whatsapp.net",
+          		RemoteJid: "85257077257@s.whatsapp.net",
           	},
           	Text: msg.Data.Content.(string),
           }
