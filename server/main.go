@@ -108,7 +108,7 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
 
     note := &pbx.ClientNote{}
     note.Topic = "usrNoJ5tCr-JCM"
-    note.What = KP
+    note.What = pbx.KP
     msgNote := &pbx.ClientMsg_Note{note}
     clientMessage5 := &pbx.ClientMsg{Message: msgNote}
     err5 := globals.stream.Send(clientMessage5)
