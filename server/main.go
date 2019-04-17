@@ -738,12 +738,113 @@ func main() {
 		log.Fatalf("error logging in: %v\n", err)
 	}
 
+	go func() {
+  	log.Println("XXXXXXXXXXXXXXXXXXXXXX");
+
+    var err error
+
+    globals.conn, err = grpc.Dial("localhost:6061", grpc.WithInsecure())
+    if err != nil {
+      isConnEmpty = true
+      log.Fatal("Error dialing", err)
+    }
+    defer globals.conn.Close()
+
+    client := pbx.NewNodeClient(globals.conn)
+
+    // ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+    ctx, cancel := context.WithTimeout(context.Background(), 600*time.Second)
+    defer cancel()
+
+    stream, err := client.MessageLoop(ctx)
+    // response, err := client.MessageLoop(context.Background())
+
+    if err != nil {
+      log.Fatal("Error calling", err)
+    }
+
+
+
+    hi := &pbx.ClientHi{}
+    hi.Id = "1"
+    hi.UserAgent = "Golang_Spider_Bot/3.0"
+    hi.Ver = "0.15"
+    hi.Lang = "EN"
+
+    msgHi := &pbx.ClientMsg_Hi{hi}
+    clientMessage := &pbx.ClientMsg{Message: msgHi}
+    err = stream.Send(clientMessage)
+
+    if err != nil {
+      log.Fatal("error sending message ", err)
+    }
+
+    login := &pbx.ClientLogin{}
+    login.Id = "xena"
+    login.Scheme = "basic"
+    login.Secret = []byte("xena123")
+    clMsg := &pbx.ClientMsg_Login{login}
+    clientMessage = &pbx.ClientMsg{Message: clMsg}
+    err = stream.Send(clientMessage)
+
+    if err != nil {
+      log.Fatal("error sending message ", err)
+    }
+
+
+    pub := &pbx.ClientPub{}
+    pub.Topic = "usrXd4UeamYAZE"
+    pub.Content = []byte("")
+    msgPub := &pbx.ClientMsg_Pub{pub}
+    clientMessage2 := &pbx.ClientMsg{Message: msgPub}
+    err2 := stream.Send(clientMessage2)
+    if err2 != nil {
+      log.Fatal("error sending message ", err2)
+    }
+
+
+//     serverMsg, err := stream.Recv()
+//     if err != nil {
+//       log.Fatal(err)
+//     }
+//     log.Println(serverMsg)
+// 
+//     serverMsg, err = stream.Recv()
+//     if err != nil {
+//       log.Fatal(err)
+//     }
+//     log.Println(serverMsg)
+
+    waitc := make(chan struct{})
+    go func() {
+      for {
+        in, err := stream.Recv()
+        if err == io.EOF {
+          // read done.
+          close(waitc)
+          return
+        }
+        if err != nil {
+          log.Fatalf("Failed to receive a note : %v", err)
+        }
+        log.Printf("Got message %s", in)
+      }
+    }()
+    // for _, note := range notes {
+    //   if err := stream.Send(note); err != nil {
+    //     log.Fatalf("Failed to send a note: %v", err)
+    //   }
+    // }
+    // stream.CloseSend()
+    <-waitc
+
+	}
+
 
 	if err = listenAndServe(config.Listen, mux, tlsConfig, signalHandler()); err != nil {
 		log.Fatal(err)
 	}
 
-	log.Println("XXXXXXXXXXXXXXXXXXXXXX");
 
 
 
