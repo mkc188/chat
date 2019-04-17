@@ -110,7 +110,10 @@ func (*waHandler) HandleTextMessage(message whatsapp.TextMessage) {
     pub := &pbx.ClientPub{}
     pub.Topic = "usrNoJ5tCr-JCM"
 
-    bytes, err := json.Marshal(message.Text)
+    bytes, err4 := json.Marshal(message.Text)
+    if err4 != nil {
+      log.Fatal("error sending message ", err4)
+    }
 
     pub.Content = bytes
     msgPub := &pbx.ClientMsg_Pub{pub}
